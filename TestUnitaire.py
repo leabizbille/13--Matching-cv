@@ -7,7 +7,8 @@ from io import BytesIO
 import pytest
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics.pairwise import euclidean_distances, cosine_similarity
-from testCV_plusieursVect_Calculs import extract_text_from_pdf, compute_euclidean_distance, compute_cosine_similarity, compute_jaccard_similarity, get_vectorizer
+from testCV_plusieursVect_Calculs import extract_text_from_pdf, compute_euclidean_distance, compute_cosine_similarity, compute_jaccard_similarity, get_vectorizer, load_text  
+
 
 
 # Télécharger les stopwords en français
@@ -75,7 +76,7 @@ class TestMatchingCV(unittest.TestCase):
         distance = compute_euclidean_distance(cv_text, job_text, vectorizer)
         assert distance >= 0  # La distance euclidienne est toujours positive
 
-    def test_compute_cosine_similarity():
+    def test_compute_cosine_similarity(self):
         cv_text = "data science machine learning"
         job_text = "machine learning deep learning"
         vectorizer = TfidfVectorizer()
