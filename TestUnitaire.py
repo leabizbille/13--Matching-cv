@@ -66,7 +66,8 @@ class TestMatchingCV(unittest.TestCase):
         tfidf_matrix = vectorizer.fit_transform([text1, text2])
         expected_similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])[0][0]
         
-        computed_similarity = compute_cosine_similarity(text1, text2, vectorizer_type='tfidf')
+        computed_similarity = compute_cosine_similarity(text1, text2, vectorizer)
+
         self.assertAlmostEqual(computed_similarity, expected_similarity, places=6)
 
     def test_compute_euclidean_distance(self):
