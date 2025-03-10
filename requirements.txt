@@ -23,6 +23,8 @@ streamlit
 fastapi
 uvicorn
 python-multipart
+pytest
+
 
 
 scikit-learn
