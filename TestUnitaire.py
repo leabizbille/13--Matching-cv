@@ -1,18 +1,18 @@
 import unittest
 from unittest.mock import MagicMock
 import PyPDF2
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 import nltk
 from nltk.corpus import stopwords
 from io import BytesIO
+import pytest
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.metrics.pairwise import euclidean_distances, cosine_similarity
+from testCV_plusieursVect_Calculs import extract_text_from_pdf, compute_euclidean_distance, compute_cosine_similarity, compute_jaccard_similarity, get_vectorizer
+
 
 # Télécharger les stopwords en français
 nltk.download('stopwords')
 french_stopwords = stopwords.words('french')
-
-# Importation des fonctions à tester
-from testCV_plusieursVectorizer import extract_text_from_pdf, load_text, compute_cosine_similarity
 
 class TestMatchingCV(unittest.TestCase):
     
@@ -52,6 +52,47 @@ class TestMatchingCV(unittest.TestCase):
         
         computed_similarity = compute_cosine_similarity(text1, text2, vectorizer_type='tfidf')
         self.assertAlmostEqual(computed_similarity, expected_similarity, places=6)
+
+    # Mock PDF pour les tests
+    def create_mock_pdf(text):
+        output = BytesIO()
+        pdf_writer = PyPDF2.PdfWriter()
+        pdf_page = PyPDF2.pdf.PageObject.create_blank_page(width=300, height=300)
+        pdf_writer.add_page(pdf_page)
+        pdf_writer.write(output)
+        output.seek(0)
+        return output
+
+    def test_extract_text_from_pdf():
+        pdf_file = create_mock_pdf("Ceci est un test PDF.")
+        extracted_text = extract_text_from_pdf(pdf_file)
+        assert "Ceci est un test PDF." in extracted_text
+
+    def test_compute_euclidean_distance():
+        cv_text = "data science machine learning"
+        job_text = "machine learning deep learning"
+        vectorizer = TfidfVectorizer()
+        distance = compute_euclidean_distance(cv_text, job_text, vectorizer)
+        assert distance >= 0  # La distance euclidienne est toujours positive
+
+    def test_compute_cosine_similarity():
+        cv_text = "data science machine learning"
+        job_text = "machine learning deep learning"
+        vectorizer = TfidfVectorizer()
+        similarity = compute_cosine_similarity(cv_text, job_text, vectorizer)
+        assert 0 <= similarity <= 1  # Cosine similarity est entre 0 et 1
+
+    def test_compute_jaccard_similarity():
+        cv_text = "data science machine learning"
+        job_text = "machine learning deep learning"
+        similarity = compute_jaccard_similarity(cv_text, job_text)
+        assert 0 <= similarity <= 1  # Jaccard similarity est entre 0 et 1
+
+    def test_get_vectorizer():
+        assert isinstance(get_vectorizer('tfidf'), TfidfVectorizer)
+        assert isinstance(get_vectorizer('count'), CountVectorizer)
+        with pytest.raises(ValueError):
+            get_vectorizer('invalid')
 
 if __name__ == '__main__':
     unittest.main()
