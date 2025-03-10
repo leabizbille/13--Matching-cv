@@ -64,12 +64,12 @@ class TestMatchingCV(unittest.TestCase):
         output.seek(0)
         return output
 
-    def test_extract_text_from_pdf():
+    def test_extract_text_from_pdf(self):
         pdf_file = create_mock_pdf("Ceci est un test PDF.")
         extracted_text = extract_text_from_pdf(pdf_file)
         assert "Ceci est un test PDF." in extracted_text
 
-    def test_compute_euclidean_distance():
+    def test_compute_euclidean_distance(self):
         cv_text = "data science machine learning"
         job_text = "machine learning deep learning"
         vectorizer = TfidfVectorizer()
@@ -83,13 +83,13 @@ class TestMatchingCV(unittest.TestCase):
         similarity = compute_cosine_similarity(cv_text, job_text, vectorizer)
         assert 0 <= similarity <= 1  # Cosine similarity est entre 0 et 1
 
-    def test_compute_jaccard_similarity():
+    def test_compute_jaccard_similarity(self):
         cv_text = "data science machine learning"
         job_text = "machine learning deep learning"
         similarity = compute_jaccard_similarity(cv_text, job_text)
         assert 0 <= similarity <= 1  # Jaccard similarity est entre 0 et 1
 
-    def test_get_vectorizer():
+    def test_get_vectorizer(self):
         assert isinstance(get_vectorizer('tfidf'), TfidfVectorizer)
         assert isinstance(get_vectorizer('count'), CountVectorizer)
         with pytest.raises(ValueError):
