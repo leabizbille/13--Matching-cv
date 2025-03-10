@@ -26,4 +26,4 @@ jobs:
 
       - name: Run tests  
         run: |  
-          pytest test_matching_cv.py  # Lance les tests unitaires
+          pytest TestUnitaire.py  # Lance les tests unitaires
