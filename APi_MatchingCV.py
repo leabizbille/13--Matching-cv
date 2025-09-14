@@ -63,6 +63,6 @@ async def match_cvs_with_job(
 
     return {"results": results}
 
-# Pour exécuter l'API : `uvicorn nom_du_fichier:app --reload`
+# Pour exécuter l'API : `uvicorn APi_MatchingCV:app --reload`
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
