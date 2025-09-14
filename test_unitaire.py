@@ -7,7 +7,7 @@ from io import BytesIO
 import pytest
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics.pairwise import euclidean_distances, cosine_similarity
-from PyPDF2 import PdfWriter, PageObject  # Ajout des imports manquants
+from PyPDF2 import PdfWriter, PageObject 
 from testCV_plusieursVect_Calculs import (
     extract_text_from_pdf, compute_euclidean_distance, 
     compute_cosine_similarity, compute_jaccard_similarity, 
@@ -15,16 +15,20 @@ from testCV_plusieursVect_Calculs import (
 )
 
 # Télécharger les stopwords en français
-nltk.download('stopwords')
-french_stopwords = stopwords.words('french')
+try:
+    french_stopwords = stopwords.words('french')
+except LookupError:
+    nltk.download('stopwords')
+    french_stopwords = stopwords.words('french')
+
 
 class TestMatchingCV(unittest.TestCase):
     def create_mock_pdf(self, text):
         """Crée un fichier PDF contenant du texte (via reportlab pour garantir l'extraction)"""
-        from reportlab.pdfgen import canvas  # Import ici pour éviter de le charger si non utilisé
+        from reportlab.pdfgen import canvas  
         output = BytesIO()
         c = canvas.Canvas(output)
-        c.drawString(100, 500, text)  # Ajoute du texte au PDF
+        c.drawString(100, 500, text)  
         c.save()
         output.seek(0)
         return output

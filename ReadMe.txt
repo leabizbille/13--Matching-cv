@@ -9,3 +9,6 @@ myenv\Scripts\activate       #Création d'un environnement :
 
 pip install -r requirements.txt
 pip install --upgrade pip
+
+
+python -m pytest
